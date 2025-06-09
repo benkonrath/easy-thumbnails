@@ -1,7 +1,9 @@
 from io import BytesIO
-from PIL import Image, ImageChops, ImageDraw
+from PIL import Image, ImageDraw
 from easy_thumbnails import processors
 from unittest import TestCase
+
+from easy_thumbnails.files import get_thumbnailer
 
 
 def create_animated_image(mode='RGB', format="gif", size=(1000, 1000), no_frames=6, loop=None):
@@ -96,3 +98,11 @@ class AnimatedFormatProcessorsTests(TestCase):
         processed_loop = processed.info.get('loop', 0)
         self.assertEqual(processed_loop, original_loop)
         self.assertEqual(processed_loop, loop_value)
+
+    def test_gif_with_mode_p(self):
+        with open("easy_thumbnails/tests/files/animated_mode_p.gif", "rb") as im:
+            t = get_thumbnailer(im, "easy_thumbnails/tests/files/animated_mode_p.gif")
+            # Should not fail because of wrong mode and should still be animated.
+            # https://github.com/SmileyChris/easy-thumbnails/issues/653
+            thumbnail = t.get_thumbnail({'size': (500, 50), 'crop': True})
+            self.assertTrue(getattr(thumbnail.image, "is_animated", False))
