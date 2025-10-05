@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=77.0.3"]
+requires = ["setuptools>=80"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -50,6 +50,16 @@ Homepage = "http://github.com/SmileyChris/easy-thumbnails"
 packages = ["easy_thumbnails"]
 include-package-data = true
 zip-safe = false
+
+[tool.setuptools.package-data]
+easy_thumbnails = [
+    "management/**/*",
+    "mirgrations/**/*",
+    "optimize/**/*",
+    "templatetags/**/*",
+    "tests/**/*",
+    "VIL/**/*",
+]
 
 [tool.setuptools.dynamic]
 version = {attr="easy_thumbnails.__version__"}
